@@ -2,7 +2,8 @@
 
 ## Descrição
 
-Este projeto utiliza um sistema multiagente para gerar newsletters personalizadas sob demanda. O objetivo é fornecer um resumo informativo e balanceado sobre um tópico específico, combinando notícias factuais com conteúdo relacionado e diferentes perspectivas, tudo filtrado de acordo com os princípios definidos pelo usuário.
+Inspirado no Hackathon da Nvidia na Semana da Computação de minha universidade, tive a ideia desta aplicação com o auxílio de IA.
+O projeto utiliza um sistema multiagente para gerar newsletters personalizadas sob demanda. O objetivo é fornecer um resumo informativo e balanceado sobre um tópico específico, combinando notícias factuais com conteúdo relacionado e diferentes perspectivas, tudo filtrado de acordo com os princípios definidos pelo usuário. 
 
 A saída final é um arquivo em formato Markdown, pronto para leitura ou distribuição.
 
@@ -23,3 +24,4 @@ O sistema é composto por uma equipe de agentes de IA, cada um com uma responsab
   * **Agente de Expansão:** Procura por conteúdo complementar, incluindo artigos de opinião, análises profundas e tópicos relacionados que possam ser de interesse do usuário.
   * **Agente Guardião:** Atua como um filtro ético. Ele avalia todo o conteúdo selecionado (sumários, artigos, opiniões) para garantir que esteja alinhado com a "constituição" de princípios do usuário.
   * **Agente Editor:** Recebe o conteúdo final aprovado pelo Guardião e o estrutura em um arquivo Markdown coeso e bem formatado.
+
