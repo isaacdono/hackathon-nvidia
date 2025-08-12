@@ -1,68 +1,37 @@
 #!/usr/bin/env python
 import sys
-import warnings
+from newsletter.crew import NewsletterCrew
 
-from datetime import datetime
-
-from newsletter.crew import Newsletter
-
-warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
-
-# This main file is intended to be a way for you to run your
-# crew locally, so refrain from adding unnecessary logic into this file.
-# Replace with inputs you want to test with, it will automatically
-# interpolate any tasks and agents information
+# Este arquivo principal destina-se a ser uma maneira de você executar sua equipe
+# localmente. Evite adicionar lógica desnecessária a este arquivo.
+# Substitua pelas entradas que você deseja testar; ele irá interpolar
+# automaticamente quaisquer informações de tarefas e agentes.
 
 def run():
     """
-    Run the crew.
+    Executa a equipe com as entradas definidas.
     """
+    # Defina as entradas para a sua equipe aqui.
+    # A 'constitution' é usada pelo Agente Guardião para filtrar o conteúdo.
     inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
+        'topic': 'Avanços em Inteligência Artificial e LLMs em 2025',
+        'constitution': """
+        1. Foco na Objetividade: Priorizar reportagens factuais e baseadas em dados. Evitar conteúdo excessivamente especulativo ou sensacionalista.
+        2. Balanceamento de Perspectivas: Para qualquer tópico controverso, incluir pontos de vista de diferentes lados, desde que bem fundamentados.
+        3. Evitar Discurso de Ódio e Extremismo: Excluir qualquer conteúdo que promova violência, discriminação ou teorias da conspiração infundadas.
+        4. Relevância e Atualidade: O conteúdo deve ser recente e diretamente relacionado ao tópico principal.
+        5. Fonte Confiável: Dar preferência a fontes de notícias com um histórico estabelecido de jornalismo de qualidade e evitar fontes conhecidas por desinformação.
+        6. Foco Técnico para Engenheiros: Incluir detalhes técnicos ou análises que sejam relevantes para um estudante de Engenharia da Computação, quando possível.
+        """
     }
     
     try:
-        Newsletter().crew().kickoff(inputs=inputs)
+        # Inicia a execução da equipe com as entradas fornecidas.
+        # A classe foi renomeada para NewsletterCrew no arquivo crew.py
+        NewsletterCrew().crew().kickoff(inputs=inputs)
     except Exception as e:
-        raise Exception(f"An error occurred while running the crew: {e}")
+        # Captura e exibe qualquer erro que ocorra durante a execução.
+        print(f"Ocorreu um erro ao executar a equipe: {e}")
 
-
-def train():
-    """
-    Train the crew for a given number of iterations.
-    """
-    inputs = {
-        "topic": "AI LLMs",
-        'current_year': str(datetime.now().year)
-    }
-    try:
-        Newsletter().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
-
-    except Exception as e:
-        raise Exception(f"An error occurred while training the crew: {e}")
-
-def replay():
-    """
-    Replay the crew execution from a specific task.
-    """
-    try:
-        Newsletter().crew().replay(task_id=sys.argv[1])
-
-    except Exception as e:
-        raise Exception(f"An error occurred while replaying the crew: {e}")
-
-def test():
-    """
-    Test the crew execution and returns the results.
-    """
-    inputs = {
-        "topic": "AI LLMs",
-        "current_year": str(datetime.now().year)
-    }
-    
-    try:
-        Newsletter().crew().test(n_iterations=int(sys.argv[1]), eval_llm=sys.argv[2], inputs=inputs)
-
-    except Exception as e:
-        raise Exception(f"An error occurred while testing the crew: {e}")
+if __name__ == "__main__":
+    run()

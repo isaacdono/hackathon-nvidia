@@ -1,67 +1,110 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from crewai.agents.agent_builder.base_agent import BaseAgent
 from crewai_tools import SerperDevTool
-from typing import List
-# If you want to run a snippet of code before or after the crew starts,
-# you can use the @before_kickoff and @after_kickoff decorators
-# https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
 
+search_tool = SerperDevTool()
 
 @CrewBase
-class Newsletter():
-    """Newsletter crew"""
+class NewsletterCrew():
+    """Define a equipe (crew) para criação da Newsletter."""
+    agents_config = 'config/agents.yaml'
+    tasks_config = 'config/tasks.yaml'
 
-    agents: List[BaseAgent]
-    tasks: List[Task]
-
-    # Learn more about YAML configuration files here:
-    # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
-    # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
-    
-    # If you would like to add tools to your agents, you can learn more about it here:
-    # https://docs.crewai.com/concepts/agents#agent-tools
-    @agent
-    def researcher(self) -> Agent:
-        return Agent(
-            config=self.agents_config['researcher'], # type: ignore[index]
-            verbose=True,
-            tools=[SerperDevTool()]
-        )
+    # --- AGENTES ---
 
     @agent
-    def reporting_analyst(self) -> Agent:
+    def pesquisador(self) -> Agent:
         return Agent(
-            config=self.agents_config['reporting_analyst'], # type: ignore[index]
+            # Correção: Acessar a chave 'agentes' primeiro
+            config=self.agents_config['agentes']['pesquisador'],
+            tools=[search_tool],
             verbose=True
         )
 
-    # To learn more about structured task outputs,
-    # task dependencies, and task callbacks, check out the documentation:
-    # https://docs.crewai.com/concepts/tasks#overview-of-a-task
+    @agent
+    def analista(self) -> Agent:
+        return Agent(
+            # Correção: Acessar a chave 'agentes' primeiro
+            config=self.agents_config['agentes']['analista'],
+            verbose=True
+        )
+
+    @agent
+    def expansao(self) -> Agent:
+        return Agent(
+            # Correção: Acessar a chave 'agentes' primeiro
+            config=self.agents_config['agentes']['expansao'],
+            tools=[search_tool],
+            verbose=True
+        )
+
+    @agent
+    def guardiao(self) -> Agent:
+        return Agent(
+            # Correção: Acessar a chave 'agentes' primeiro
+            config=self.agents_config['agentes']['guardiao'],
+            verbose=True
+        )
+    
+    @agent
+    def editor(self) -> Agent:
+        return Agent(
+            # Correção: Acessar a chave 'agentes' primeiro
+            config=self.agents_config['agentes']['editor'],
+            verbose=True
+        )
+
+    # --- TAREFAS ---
+    
     @task
-    def research_task(self) -> Task:
+    def pesquisa_de_noticias(self) -> Task:
         return Task(
-            config=self.tasks_config['research_task'], # type: ignore[index]
+            # Correção: Acessar a chave 'tasks' primeiro
+            config=self.tasks_config['tasks']['pesquisa_de_noticias'],
+            agent=self.pesquisador()
         )
 
     @task
-    def reporting_task(self) -> Task:
+    def analise_e_sumarizacao(self) -> Task:
         return Task(
-            config=self.tasks_config['reporting_task'], # type: ignore[index]
-            output_file='report.md'
+            # Correção: Acessar a chave 'tasks' primeiro
+            config=self.tasks_config['tasks']['analise_e_sumarizacao_factual'],
+            agent=self.analista(),
+            context=[self.pesquisa_de_noticias()]
+        )
+        
+    @task
+    def expansao_de_conteudo(self) -> Task:
+        return Task(
+            # Correção: Acessar a chave 'tasks' primeiro
+            config=self.tasks_config['tasks']['expansao_com_perspectivas'],
+            agent=self.expansao(),
+            context=[self.analise_e_sumarizacao()]
+        )
+
+    @task
+    def filtro_etico(self) -> Task:
+        return Task(
+            # Correção: Acessar a chave 'tasks' primeiro
+            config=self.tasks_config['tasks']['filtro_de_alinhamento_com_constituicao'],
+            agent=self.guardiao(),
+            context=[self.analise_e_sumarizacao(), self.expansao_de_conteudo()]
+        )
+
+    @task
+    def montagem_da_newsletter(self) -> Task:
+        return Task(
+            # Correção: Acessar a chave 'tasks' primeiro
+            config=self.tasks_config['tasks']['compilacao_final_em_markdown'],
+            agent=self.editor(),
+            context=[self.filtro_etico()],
         )
 
     @crew
     def crew(self) -> Crew:
-        """Creates the Newsletter crew"""
-        # To learn how to add knowledge sources to your crew, check out the documentation:
-        # https://docs.crewai.com/concepts/knowledge#what-is-knowledge
-
         return Crew(
-            agents=self.agents, # Automatically created by the @agent decorator
-            tasks=self.tasks, # Automatically created by the @task decorator
+            agents=self.agents,
+            tasks=self.tasks,
             process=Process.sequential,
-            verbose=True,
-            # process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
+            verbose=True
         )
