@@ -37,10 +37,18 @@ tasks:
       O conjunto consolidado e filtrado de resumos factuais e links de expansão
       que foram aprovados por estarem em conformidade com a constituição.
 
+  busca_de_imagem:
+    description: >
+      Com base no resumo final do conteúdo, encontre UMA imagem de alta qualidade
+      e relevante para o tópico '{topic}'. A imagem deve ser visualmente
+      atraente e de uso livre.
+    expected_output: >
+      O URL da melhor imagem encontrada.
+
   compilacao_final_em_markdown:
     description: >
-      Receba o conteúdo final aprovado pelo Agente Guardião e organize-o em um
-      arquivo Markdown bem estruturado. O arquivo deve ter seções claras:
+      Receba o conteúdo final aprovado pelo Agente Guardião e imagem (URL) do Curador de Imagens
+      e organize-o em um arquivo Markdown bem estruturado. O arquivo deve ter seções claras:
       'Principais Notícias (Resumo Factual)', 'Diferentes Perspectivas e Análises'.
       Use formatação Markdown para títulos, listas e links.
     expected_output: >
