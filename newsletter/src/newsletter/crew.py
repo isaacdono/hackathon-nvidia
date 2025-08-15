@@ -1,7 +1,7 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
-from newsletter.tools.img_search_tool import PexelsImageSearchTool
+from newsletter.tools.img_search_tool import DDGImageSearchTool
 
 search_tool = SerperDevTool()
 
@@ -47,8 +47,7 @@ class NewsletterCrew():
     def curador_de_imagens(self) -> Agent:
         return Agent(
             config=self.agents_config['agentes']['curador_de_imagens'],
-            tools=[PexelsImageSearchTool()],
-            verbose=True
+            tools=[DDGImageSearchTool()]
         )
     
     @agent

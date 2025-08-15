@@ -11,7 +11,7 @@ tasks:
     description: >
       Analise o conteúdo bruto coletado na tarefa anterior. Para cada artigo,
       identifique os fatos principais e crie um resumo conciso e objetivo.
-      A saída deve ser uma lista de resumos factuais.
+      A saída deve ser uma lista de resumos factuais, com os respectivos URL.
     expected_output: >
       Uma lista de resumos em bullet points, cada um representando o núcleo factual
       de um artigo analisado.
@@ -30,8 +30,8 @@ tasks:
     description: >
       Avalie todo o conteúdo produzido (resumos factuais e conteúdo expandido)
       com base na seguinte constituição definida pelo usuário: {constitution}.
-      Garanta que o material seja balanceado, evite extremismos e esteja alinhado
-      com os princípios. Rejeite qualquer conteúdo que viole essas diretrizes.
+      Garanta que o material seja balanceado e coerente entre si.
+      Rejeite qualquer conteúdo que viole essas diretrizes.
       Sua saída final é o conjunto de conteúdo aprovado.
     expected_output: >
       O conjunto consolidado e filtrado de resumos factuais e links de expansão
@@ -39,9 +39,9 @@ tasks:
 
   busca_de_imagem:
     description: >
-      Com base no resumo final do conteúdo, encontre UMA imagem de alta qualidade
-      e relevante para o tópico '{topic}'. A imagem deve ser visualmente
-      atraente e de uso livre.
+      Analise o texto final aprovado recebido da tarefa anterior.
+      Com base nesta análise e no {topic}, use a ferramenta de busca para encontrar
+      UM URL de uma imagem relevante e de alta qualidade.
     expected_output: >
       O URL da melhor imagem encontrada.
 
@@ -50,7 +50,7 @@ tasks:
       Receba o conteúdo final aprovado pelo Agente Guardião e imagem (URL) do Curador de Imagens
       e organize-o em um arquivo Markdown bem estruturado. O arquivo deve ter seções claras:
       'Principais Notícias (Resumo Factual)', 'Diferentes Perspectivas e Análises'.
-      Use formatação Markdown para títulos, listas e links.
+      Use formatação Markdown para títulos, listas, links e imagem.
     expected_output: >
       Um único arquivo de texto em formato Markdown chamado 'resumo_{topic}.md',
       contendo todo o conteúdo formatado de maneira coesa e pronta para ser lida.
